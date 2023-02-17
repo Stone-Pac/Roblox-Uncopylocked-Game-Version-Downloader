@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Roblox Game Downloader</title>
+</head>
+<body>
+	<script type="text/javascript">
+		while (true) {
+			var game_id = prompt("Enter the Roblox game ID: ");
+			var latest_version = prompt("Enter the latest version you want to download: ");
+
+			// retrieve the game name using the Roblox API
+			var url = "https://games.roblox.com/v1/games/multiget-place-details?placeIds=" + game_id;
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					var game_name = data["data"][0]["name"];
+
+					// use the game name as the prefix for the downloaded files
+					var url = "https://assetdelivery.roblox.com/v1/asset?id=" + game_id + "&version=";
+					var zip_filename = game_name + ".zip";
+					var zip = new JSZip();
+					for (var version = 1; version <= latest_version; version++) {
+						console.log("Downloading version " + version + "...");
+						var url_with_version = url + version;
+						var start_time = Date.now();
+						fetch(url_with_version)
+							.then(response => response.arrayBuffer())
+							.then(buffer => {
+								var end_time = Date.now();
+								var file_bytes = new Uint8Array(buffer);
+								var filename = game_name + "_" + version + ".rbxlx";
+								zip.file(filename, file_bytes);
+								var file_size = buffer.byteLength / 1024 / 1024; // convert to MB
+								var download_time = (end_time - start_time) / 1000;
+								console.log("Downloaded " + filename + " (" + file_size.toFixed(2) + " MB) in " + download_time.toFixed(2) + " seconds.");
+							})
+							.catch(error => console.log("Error: Unable to download version " + version));
+					}
+					zip.generateAsync({ type: "blob" })
+						.then(blob => {
+							saveAs(blob, zip_filename);
+							console.log("All versions downloaded and saved to " + zip_filename);
+						})
+						.catch(error => console.log("Error: Unable to generate ZIP file"));
+				})
+				.catch(error => console.log("Error: Unable to retrieve game name for game ID " + game_id));
+
+			// ask the user if they want to download another game
+			var another_game = prompt("Do you want to download another game? (y/n)");
+			if (another_game.toLowerCase() != 'y') {
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
