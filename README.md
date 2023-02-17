@@ -7,3 +7,8 @@ if you know the latest version of ur or someone else uncopylocked game is need i
 all it does is downloads every single version up to the version u provideed to the python script
 
 pretty simple lol
+
+WARNING: DO NOT Name any the files with these characters or else the files will be currupted
+
+
+\ / * ? " < > |
