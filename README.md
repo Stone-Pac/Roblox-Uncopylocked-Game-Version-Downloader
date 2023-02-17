@@ -7,5 +7,3 @@ if you know the latest version of ur or someone else uncopylocked game is need i
 all it does is downloads every single version up to the version u provideed to the python script
 
 pretty simple lol
-
-(Recommend picking PY file its more easier then html and js)
