@@ -7,7 +7,7 @@ while True:
     game_id = input("Enter the Roblox game ID: ")
     latest_version = input("Enter the latest version you want to download: ")
 
-    # retrieve the game name using the Roblox API
+   
     url = f"https://games.roblox.com/v1/games/multiget-place-details?placeIds={game_id}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -16,7 +16,7 @@ while True:
         print(f"Error: Unable to retrieve game name for game ID {game_id}")
         game_name = game_id
 
-    # use the game name as the prefix for the downloaded files
+   
     url = f"https://assetdelivery.roblox.com/v1/asset?id={game_id}&version="
     zip_filename = f"{game_name}.zip"
     with zipfile.ZipFile(zip_filename, mode='w') as zip_file:
@@ -37,7 +37,7 @@ while True:
                 print(f"Error: Unable to download version {version}")
         print(f"All versions downloaded and saved to {zip_filename}")
 
-    # ask the user if they want to download another game
+   
     another_game = input("Do you want to download another game? (y/n) ")
     if another_game.lower() != 'y':
         break
