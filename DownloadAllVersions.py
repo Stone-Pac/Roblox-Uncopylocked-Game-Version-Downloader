@@ -8,7 +8,7 @@ while True:
     game_name = input("Enter the game name: ")
     latest_version = input("Enter the latest version you want to download: ")
 
-    # use the game name as the prefix for the downloaded files
+
     url = f"https://assetdelivery.roblox.com/v1/asset?id={game_id}&version="
     zip_filename = f"{game_name}.zip"
     with zipfile.ZipFile(zip_filename, mode='w') as zip_file:
@@ -22,14 +22,14 @@ while True:
                 file_bytes = io.BytesIO(response.content).getbuffer()
                 filename = f"{game_name}_{version}.rbxlx"
                 zip_file.writestr(filename, file_bytes)
-                file_size = len(response.content) / 1024 / 1024  # convert to MB
+                file_size = len(response.content) / 1024 / 1024
                 download_time = end_time - start_time
                 print(f"Downloaded {filename} ({file_size:.2f} MB) in {download_time:.2f} seconds.")
             else:
                 print(f"Error: Unable to download version {version}")
         print(f"All versions downloaded and saved to {zip_filename}")
 
-    # ask the user if they want to download another game
+
     another_game = input("Do you want to download another game? (y/n) ")
     if another_game.lower() != 'y':
         break
